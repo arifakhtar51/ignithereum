@@ -1,0 +1,12 @@
+.picture-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  flex: 2;
+}
+
+@media (max-width: 768px) {
+  .picture-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+} 
