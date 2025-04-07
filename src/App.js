@@ -53,7 +53,10 @@ function App() {
   };
 
   const handlePayment = () => {
-    // Only clear the cart without removing pictures from the marketplace
+    // Remove purchased pictures from the marketplace
+    const purchasedIds = cart.map(item => item.id);
+    setPictures(pictures.filter(picture => !purchasedIds.includes(picture.id)));
+    // Clear the cart
     setCart([]);
   };
 
