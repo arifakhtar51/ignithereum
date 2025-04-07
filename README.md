@@ -38,7 +38,5 @@ A React.js based picture marketplace where users can browse and purchase picture
   - `App.css` - Main styles
 - `public/` - Static files
 
-## License
 
-MIT
 
