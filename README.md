@@ -1,5 +1,7 @@
 # Picture Marketplace
 
+Live Demo: [Picture Marketplace](https://ignithereum-intern.netlify.app/)
+
 A React.js based picture marketplace where users can browse and purchase pictures.
 
 ## Features
@@ -35,4 +37,8 @@ A React.js based picture marketplace where users can browse and purchase picture
   - `App.js` - Main application component
   - `App.css` - Main styles
 - `public/` - Static files
+
+## License
+
+MIT
 
