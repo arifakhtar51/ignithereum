@@ -17,7 +17,7 @@ function ShoppingCart({ cart, onRemoveFromCart, onPayment }) {
                 <img src={item.imageUrl} alt={item.title} className="cart-item-image" />
                 <div className="cart-item-details">
                   <h3>{item.title}</h3>
-                  <p>${item.price.toFixed(2)}</p>
+                  <p>{item.price.toFixed(7)} ETH</p>
                   <button 
                     className="remove-button"
                     onClick={() => onRemoveFromCart(item.id)}
@@ -29,7 +29,7 @@ function ShoppingCart({ cart, onRemoveFromCart, onPayment }) {
             ))}
           </div>
           <div className="cart-summary">
-            <h3>Total: ${totalPrice.toFixed(2)}</h3>
+            <h3>Total: {totalPrice.toFixed(7)} ETH</h3>
             <button 
               className="pay-button"
               onClick={onPayment}
