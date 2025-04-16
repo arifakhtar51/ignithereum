@@ -5,6 +5,8 @@ import './App.css';
 import PictureGrid from './components/PictureGrid';
 import CartPage from './components/CartPage';
 import Navigation from './components/Navigation';
+import Profile from './components/Profile';
+import NFT from './components/NFT';
 
 // Your testnet wallet address where payments will be sent
 const SELLER_WALLET_ADDRESS = '0xbDA5747bFD65F08deb54cb465eB87D40e51B197E';
@@ -149,6 +151,12 @@ function App() {
             } 
           />
           <Route 
+            path="/nft" 
+            element={
+              <NFT />
+            } 
+          />
+          <Route 
             path="/cart" 
             element={
               <CartPage 
@@ -156,6 +164,12 @@ function App() {
                 onRemoveFromCart={removeFromCart} 
                 onPayment={handlePayment} 
               />
+            } 
+          />
+          <Route 
+            path="/profile" 
+            element={
+              <Profile account={account} />
             } 
           />
         </Routes>

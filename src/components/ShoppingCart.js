@@ -34,7 +34,7 @@ function ShoppingCart({ cart, onRemoveFromCart, onPayment }) {
               className="pay-button"
               onClick={onPayment}
             >
-              Pay Now
+              Mint Now
             </button>
           </div>
         </>
