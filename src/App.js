@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ethers } from 'ethers';
 import './App.css';
+import Profile from './components/Profile';
+import NFT from './components/NFT';
 import PictureGrid from './components/PictureGrid';
 import CartPage from './components/CartPage';
 import Navigation from './components/Navigation';
@@ -17,7 +19,7 @@ function App() {
     {
       id: 1,
       title: 'Mountain View',
-      price: 0.0000001, // Price in ETH
+      price: 0.0000001,
       imageUrl: 'https://picsum.photos/300/200?random=1',
     },
     {
@@ -60,13 +62,13 @@ function App() {
       }
 
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      
+
       if (accounts.length === 0) {
         alert('Please connect your MetaMask account!');
         return;
       }
 
-      const provider = new ethers.BrowserProvider(window.ethereum);
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
       setProvider(provider);
       setAccount(accounts[0]);
 
@@ -82,7 +84,6 @@ function App() {
       window.ethereum.on('chainChanged', () => {
         window.location.reload();
       });
-
     } catch (error) {
       console.error('Error connecting to MetaMask:', error);
       if (error.code === 4001) {
@@ -123,7 +124,7 @@ function App() {
       const purchasedIds = cart.map(item => item.id);
       setPictures(pictures.filter(picture => !purchasedIds.includes(picture.id)));
       setCart([]);
-      
+
       alert('Payment successful! Transaction hash: ' + tx.hash);
     } catch (error) {
       console.error('Error processing payment:', error);
@@ -158,10 +159,18 @@ function App() {
               />
             } 
           />
+          <Route 
+            path="/profile" 
+            element={<Profile account={account} />} 
+          />
+          <Route 
+            path="/nft" 
+            element={<NFT account={account} />} 
+          />
         </Routes>
       </div>
     </Router>
   );
 }
 
-export default App; 
+export default App;
