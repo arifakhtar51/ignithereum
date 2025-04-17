@@ -12,7 +12,7 @@ function PictureCard({ picture, onAddToCart }) {
           className="buy-button"
           onClick={() => onAddToCart(picture)}
         >
-          Buy
+          Add to Cart
         </button>
       </div>
     </div>

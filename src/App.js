@@ -8,51 +8,20 @@ import PictureGrid from './components/PictureGrid';
 import CartPage from './components/CartPage';
 import Navigation from './components/Navigation';
 
-// Your testnet wallet address where payments will be sent
 const SELLER_WALLET_ADDRESS = '0xbDA5747bFD65F08deb54cb465eB87D40e51B197E';
 
 function App() {
   const [cart, setCart] = useState([]);
   const [account, setAccount] = useState('');
   const [provider, setProvider] = useState(null);
-  const [pictures, setPictures] = useState([
-    {
-      id: 1,
-      title: 'Mountain View',
-      price: 0.0000001,
-      imageUrl: 'https://picsum.photos/300/200?random=1',
-    },
-    {
-      id: 2,
-      title: 'Ocean Sunset',
-      price: 0.0000001,
-      imageUrl: 'https://picsum.photos/300/200?random=2',
-    },
-    {
-      id: 3,
-      title: 'City Skyline',
-      price: 0.0000001,
-      imageUrl: 'https://picsum.photos/300/200?random=3',
-    },
-    {
-      id: 4,
-      title: 'Forest Path',
-      price: 0.0000001,
-      imageUrl: 'https://picsum.photos/300/200?random=4',
-    },
-    {
-      id: 5,
-      title: 'Desert Dunes',
-      price: 0.0000001,
-      imageUrl: 'https://picsum.photos/300/200?random=5',
-    },
-    {
-      id: 6,
-      title: 'Beach Paradise',
-      price: 0.0000001,
-      imageUrl: 'https://picsum.photos/300/200?random=6',
-    },
-  ]);
+  const [pictures, setPictures] = useState([]);
+  const [form, setForm] = useState({
+    title: '',
+    description: '',
+    price: '',
+    image: null,
+    previewUrl: '',
+  });
 
   const connectWallet = async () => {
     try {
@@ -109,7 +78,7 @@ function App() {
     }
 
     try {
-      const totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+      const totalPrice = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
       const totalPriceInWei = ethers.parseEther(totalPrice.toString());
 
       const signer = await provider.getSigner();
@@ -132,41 +101,88 @@ function App() {
     }
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    const url = file ? URL.createObjectURL(file) : '';
+    setForm(prev => ({ ...prev, image: file, previewUrl: url }));
+  };
+
+  const handleAddPicture = () => {
+    if (!form.title || !form.price || !form.previewUrl) {
+      alert('Please complete the form.');
+      return;
+    }
+
+    const newPicture = {
+      id: Date.now(),
+      title: form.title,
+      description: form.description,
+      price: parseFloat(form.price),
+      imageUrl: form.previewUrl,
+    };
+
+    setPictures([...pictures, newPicture]);
+    setForm({ title: '', description: '', price: '', image: null, previewUrl: '' });
+  };
+
   return (
     <Router>
       <div className="App">
-        <Navigation 
-          account={account} 
-          onConnectWallet={connectWallet} 
-          cartItems={cart.length} 
-        />
+        <Navigation account={account} onConnectWallet={connectWallet} cartItems={cart.length} />
         <Routes>
-          <Route 
-            path="/" 
+          <Route
+            path="/"
             element={
               <main className="App-main">
+                <div className="upload-form">
+                  <h2>Add a New Picture To Be Mint</h2>
+                  <input
+                    type="text"
+                    name="title"
+                    placeholder="Title"
+                    value={form.title}
+                    onChange={handleInputChange}
+                  />
+                  <textarea
+                    name="description"
+                    placeholder="Description"
+                    value={form.description}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="number"
+                    name="price"
+                    placeholder="Price in ETH"
+                    value={form.price}
+                    onChange={handleInputChange}
+                    step="0.0001"
+                  />
+                  <input type="file" accept="image/*" onChange={handleFileChange} />
+                  {form.previewUrl && <img src={form.previewUrl} alt="Preview" width="200" />}
+                  <button onClick={handleAddPicture}>Add</button>
+                </div>
+
                 <PictureGrid pictures={pictures} onAddToCart={addToCart} />
               </main>
-            } 
+            }
           />
-          <Route 
-            path="/cart" 
+          <Route
+            path="/cart"
             element={
-              <CartPage 
-                cart={cart} 
-                onRemoveFromCart={removeFromCart} 
-                onPayment={handlePayment} 
+              <CartPage
+                cart={cart}
+                onRemoveFromCart={removeFromCart}
+                onPayment={handlePayment}
               />
-            } 
+            }
           />
-          <Route 
-            path="/profile" 
-            element={<Profile account={account} />} 
-          />
-          <Route 
-            path="/nft" 
-            element={<NFT account={account} />} 
-          />
+          <Route path="/profile" element={<Profile account={account} />} />
+          <Route path="/nft" element={<NFT account={account} />} />
         </Routes>
       </div>
     </Router>

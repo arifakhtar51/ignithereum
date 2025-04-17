@@ -14,3 +14,22 @@
     padding: 10px;
   }
 } 
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  max-width: 400px;
+  margin: auto;
+  background: #f8f8f8;
+  border-radius: 10px;
+}
+
+.upload-form input,
+.upload-form textarea,
+.upload-form button {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
